@@ -20,7 +20,7 @@
 
   "content_scripts": [
     {
-      "matches": ["*://*.mozilla.org/*"],
+      "matches": ["*://github.com/*/*/commits/*"],
       "js": ["main.js"]
     }
   ]
