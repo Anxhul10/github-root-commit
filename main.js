@@ -4,17 +4,23 @@ const observer = new MutationObserver(() => {
     const curr_div = document.querySelector(
         ".d-flex.flex-column.flex-sm-row.gap-2"
     )
+    if(!curr_div)return;
+    if(document.getElementById("jumper-div")) return;
 
-    if(document.getElementById("jumper")) return;
+    const main_div = document.createElement("div");
+    main_div.id = "jumper-div";
 
-    const new_div = document.createElement("div");
-    new_div.id = "jumper";
-    new_div.textContent = "Jump to old commits";
+    const btn = document.createElement("button");
+    btn.id = "btn-id";
+    btn.textContent = "Jump to oldest commits";
+    btn.classList.add("button-40");
 
-    curr_div.appendChild(new_div);
+    main_div.appendChild(btn);
+    curr_div.appendChild(main_div);
 })
 
 observer.observe(document.body, {
     childList: true,
     subtree: true
 });
+
