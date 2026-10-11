@@ -1,0 +1,4 @@
+## Development
+```
+web-ext run
+```
