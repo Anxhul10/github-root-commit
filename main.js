@@ -74,8 +74,6 @@ function normalize_commit(total_commit) {
     for(let i = 0 ; i < total_commit.length; i++) {
         if(total_commit[i] >= "0" && total_commit[i] <= "9") {
             commits += total_commit[i];
-        } else {
-            break;
         }
     }
     return commits;
