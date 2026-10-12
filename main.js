@@ -41,7 +41,6 @@ function get_url() {
     const SHA = get_sha();
 
     let total_commit = Number(localStorage.getItem("Anxhul10"+base_url+"-total-commits"));
-    alert(total_commit);
     if(!total_commit) {
         total_commit = Number(prompt("enter repo total commits"));
     } 
