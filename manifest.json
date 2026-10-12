@@ -20,7 +20,7 @@
 
   "content_scripts": [
     {
-      "matches": ["*://github.com/*/*/commits/*"],
+      "matches": ["*://github.com/*/*/commits/*", "*://github.com/*/*"],
       "js": ["main.js"],
       "css": ["button.css"]
     }
