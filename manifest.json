@@ -6,12 +6,12 @@
   "description": "Jumps to the oldest first commit.",
 
   "icons": {
-    "48": "icons/border-48.png"
+    "48": "icons/github-root-commit.png"
   },
 
   "browser_specific_settings": {
     "gecko": {
-      "id": "github-root-commit@mozilla.org",
+      "id": "github-root-commit@anxhul10",
       "data_collection_permissions": {
         "required": ["none"]
       }
