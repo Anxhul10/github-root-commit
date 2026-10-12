@@ -39,26 +39,64 @@ function get_url() {
     const base_url = get_base_url();
     const branch = get_branch();
     const SHA = get_sha();
-    const total_commit = Number(prompt("Total commits"));
+
+    let total_commit = Number(localStorage.getItem("Anxhul10"+base_url+"-total-commits"));
+    if(!total_commit) {
+        total_commit = Number(prompt("enter repo total commits"));
+    } 
 
     const URL = `${base_url}/commits/${branch}/?after=${SHA}+${total_commit+1-34}`
     return URL;
 }
 
+function normalize_url(url) {
+    if(url == null) return null;
+    const url_split = url.split('/');
+    return url_split[0]+'//'+url_split[2]+'/'+url_split[3]+'/'+url_split[4];
+}
+
 function runner() {
     // to make it work dynamically we need to know the number of commints to skip after the current commit SHA
     const base_url = get_base_url();
-    let res = localStorage.getItem(base_url+"-oldest-url");
+    const normal_url = normalize_url(base_url);
+    let res = localStorage.getItem("Anxhul10"+normal_url+"-oldest-url");
 
     if(!res) {
         const URL = get_url();
-        localStorage.setItem(base_url+"-oldest-url", URL);
+        localStorage.setItem("Anxhul10"+normal_url+"-oldest-url", URL);
         return URL;
     }
     return res;
 }
+function normalize_commit(total_commit) {
+    let commits = "";
+
+    for(let i = 0 ; i < total_commit.length; i++) {
+        if(total_commit[i] >= "0" && total_commit[i] <= "9") {
+            commits += total_commit[i];
+        } else {
+            break;
+        }
+    }
+    return commits;
+}
 const observer = new MutationObserver(() => {
-    document.body.style.border = "5px solid red";
+    const root = document.location.href;
+    
+    if(root.split("/").length === 5 && !localStorage.getItem("Anxhul10"+root+"-total-commits")) {
+        const cmtContainer = document.querySelector(
+            'a[href*="/commits/"]'
+        );
+
+        const total_commits = cmtContainer
+            ?.querySelector('[data-component="text"] span')
+            ?.textContent;
+        
+        const commit = normalize_commit(total_commits);
+        localStorage.setItem("Anxhul10"+root+"-total-commits", commit);
+        return;
+    }
+    // document.body.style.border = "5px solid red";
 
     const curr_div = document.querySelector(
         ".d-flex.flex-column.flex-sm-row.gap-2"
