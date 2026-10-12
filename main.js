@@ -99,7 +99,7 @@ const observer = new MutationObserver(() => {
     const curr_div = document.querySelector(
         ".d-flex.flex-column.flex-sm-row.gap-2"
     )
-    if(root.split('/')[5] === "commit") {
+    if(root.split('/')[5] === "commits") {
         if(!curr_div)return;
         if(document.getElementById("jumper-div")) return;
 
