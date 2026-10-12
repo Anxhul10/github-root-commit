@@ -45,6 +45,15 @@ function get_url() {
     return URL;
 }
 
+function runner() {
+    const res = localStorage.getItem("URL");
+    if(!res) {
+        const URL = get_url();
+        localStorage.setItem("URL", URL);
+        return URL;
+    }
+    return res;
+}
 const observer = new MutationObserver(() => {
     document.body.style.border = "5px solid red";
 
@@ -63,7 +72,7 @@ const observer = new MutationObserver(() => {
     btn.textContent = "Jump to oldest commits";
 
     btn.addEventListener("click", function () {
-        location = get_url();
+        location = runner();
     })
 
     btn.classList.add("button-40");
