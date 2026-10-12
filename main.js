@@ -1,4 +1,5 @@
-function get_base_url(url) {
+function get_base_url() {
+    const url = document.location.href;
     let i = url.length-1;
 
     let cnt = 0;
@@ -35,8 +36,7 @@ function get_sha() {
     return url_split[url_split.length-1];
 }
 function get_url() {
-    const curr_url = document.location.href;
-    const base_url = get_base_url(curr_url);
+    const base_url = get_base_url();
     const branch = get_branch();
     const SHA = get_sha();
     const total_commit = Number(prompt("Total commits"));
@@ -44,9 +44,28 @@ function get_url() {
     const URL = `${base_url}/commits/${branch}/?after=${SHA}+${total_commit+1-34}`
     return URL;
 }
+function normalize_url(url) {
+    if(url == null) return null;
+    const url_split = url.split('/');
+    return url_split[0]+'//'+url_split[2]+'/'+url_split[3]+'/'+url_split[4];
+}
 
 function runner() {
-    const res = localStorage.getItem("URL");
+    // to make it work dynamically we need to know the number of commints to skip after the current commit SHA
+    let res = localStorage.getItem("URL");
+    const base_url = get_base_url();
+    // res: https://github.com/Anxhul10/onePiece-plymouth/commits/develop/?after=ec9358d88e82367ba252781491654717605c719e+81
+    // base: https://github.com/Anxhul10/OdinSnap
+    
+    const normalize_res = normalize_url(res);
+    alert(normalize_res);
+    alert(base_url)
+    if(normalize_res !== null && normalize_res !== base_url) {
+        localStorage.removeItem("URL");
+        res = null;
+        alert("base & res are not equal");
+    }
+
     if(!res) {
         const URL = get_url();
         localStorage.setItem("URL", URL);
