@@ -64,7 +64,35 @@ function runner() {
     }
     return res;
 }
+function normalize_commit(total_commit) {
+    let commits = "";
+
+    for(let i = 0 ; i < total_commit.length; i++) {
+        if(total_commit[i] >= "0" && total_commit[i] <= "9") {
+            commits += total_commit[i];
+        } else {
+            break;
+        }
+    }
+    return commits;
+}
 const observer = new MutationObserver(() => {
+    const root = document.location.href;
+    
+    if(root.split("/").length === 5 && !localStorage.getItem("Anxhul10"+root+"-total-commits")) {
+        const cmtContainer = document.querySelector(
+            'a[href*="/commits/"]'
+        );
+
+        const total_commits = cmtContainer
+            ?.querySelector('[data-component="text"] span')
+            ?.textContent;
+        
+        const commit = normalize_commit(total_commits);
+        alert(commit);
+        localStorage.setItem("Anxhul10"+root+"-total-commits", commit);
+        return;
+    }
     document.body.style.border = "5px solid red";
 
     const curr_div = document.querySelector(
