@@ -20,12 +20,31 @@ function get_base_url(url) {
     return final_url;
 }
 
-function get_url() {
+function get_branch() {
+    const branch = document.querySelector(
+        '.RefSelectorAnchoredOverlay-module__RefSelectorText__w_fmP'
+    ).textContent;
+    return branch;
+}
 
+function get_sha() {
+    const container = document.querySelector('.ListView-module__ul__uMK30');
+    const itms = container.querySelectorAll('li');
+    const url = itms[0].getAttribute('data-commit-link');
+    const url_split = url.split('/');
+    alert(url_split[url_split.length-1]);
+    return url_split[url_split.length-1];
+}
+function get_url() {
     const curr_url = document.location.href;
     const base_url = get_base_url(curr_url);
+    const branch = get_branch();
+    const SHA = get_sha();
+    const total_commit = Number(prompt("Total commits"));
 
-    return base_url;
+    const URL = `${base_url}/commits/${branch}/?after=${SHA}+${total_commit+1-34}`
+    alert(URL);
+    return URL;
 }
 
 const observer = new MutationObserver(() => {
