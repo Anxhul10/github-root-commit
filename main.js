@@ -96,7 +96,7 @@ const observer = new MutationObserver(() => {
         localStorage.setItem("Anxhul10"+root+"-total-commits", commit);
         return;
     }
-    document.body.style.border = "5px solid red";
+    // document.body.style.border = "5px solid red";
 
     const curr_div = document.querySelector(
         ".d-flex.flex-column.flex-sm-row.gap-2"
