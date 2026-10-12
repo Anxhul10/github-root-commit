@@ -45,14 +45,21 @@ function get_url() {
     return URL;
 }
 
+function normalize_url(url) {
+    if(url == null) return null;
+    const url_split = url.split('/');
+    return url_split[0]+'//'+url_split[2]+'/'+url_split[3]+'/'+url_split[4];
+}
+
 function runner() {
     // to make it work dynamically we need to know the number of commints to skip after the current commit SHA
     const base_url = get_base_url();
-    let res = localStorage.getItem(base_url+"-oldest-url");
+    const normal_url = normalize_url(base_url);
+    let res = localStorage.getItem("Anxhul10"+normal_url+"-oldest-url");
 
     if(!res) {
         const URL = get_url();
-        localStorage.setItem(base_url+"-oldest-url", URL);
+        localStorage.setItem("Anxhul10"+normal_url+"-oldest-url", URL);
         return URL;
     }
     return res;
