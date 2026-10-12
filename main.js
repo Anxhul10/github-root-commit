@@ -32,7 +32,6 @@ function get_sha() {
     const itms = container.querySelectorAll('li');
     const url = itms[0].getAttribute('data-commit-link');
     const url_split = url.split('/');
-    alert(url_split[url_split.length-1]);
     return url_split[url_split.length-1];
 }
 function get_url() {
@@ -43,7 +42,6 @@ function get_url() {
     const total_commit = Number(prompt("Total commits"));
 
     const URL = `${base_url}/commits/${branch}/?after=${SHA}+${total_commit+1-34}`
-    alert(URL);
     return URL;
 }
 
