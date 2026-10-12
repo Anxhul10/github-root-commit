@@ -39,7 +39,12 @@ function get_url() {
     const base_url = get_base_url();
     const branch = get_branch();
     const SHA = get_sha();
-    const total_commit = Number(prompt("Total commits"));
+
+    let total_commit = Number(localStorage.getItem("Anxhul10"+base_url+"-total-commits"));
+    alert(total_commit);
+    if(!total_commit) {
+        total_commit = Number(prompt("enter repo total commits"));
+    } 
 
     const URL = `${base_url}/commits/${branch}/?after=${SHA}+${total_commit+1-34}`
     return URL;
@@ -89,7 +94,6 @@ const observer = new MutationObserver(() => {
             ?.textContent;
         
         const commit = normalize_commit(total_commits);
-        alert(commit);
         localStorage.setItem("Anxhul10"+root+"-total-commits", commit);
         return;
     }
