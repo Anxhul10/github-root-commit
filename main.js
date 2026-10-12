@@ -99,25 +99,28 @@ const observer = new MutationObserver(() => {
     const curr_div = document.querySelector(
         ".d-flex.flex-column.flex-sm-row.gap-2"
     )
-    if(!curr_div)return;
-    if(document.getElementById("jumper-div")) return;
+    if(root.split('/')[5] === "commit") {
+        if(!curr_div)return;
+        if(document.getElementById("jumper-div")) return;
 
-    const main_div = document.createElement("div");
-    main_div.id = "jumper-div";
+        const main_div = document.createElement("div");
+        main_div.id = "jumper-div";
 
-    const btn = document.createElement("button");
+        const btn = document.createElement("button");
 
-    btn.id = "btn-id";
-    btn.textContent = "Jump to oldest commits";
+        btn.id = "btn-id";
+        btn.textContent = "Jump to oldest commits";
 
-    btn.addEventListener("click", function () {
-        location.href = runner();
-    })
+        btn.addEventListener("click", function () {
+            location.href = runner();
+        })
 
-    btn.classList.add("button-40");
+        btn.classList.add("button-40");
 
-    main_div.appendChild(btn);
-    curr_div.appendChild(main_div);
+        main_div.appendChild(btn);
+        curr_div.appendChild(main_div);
+    }
+    return;
 })
 
 observer.observe(document.body, {
