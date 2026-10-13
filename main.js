@@ -53,7 +53,14 @@ function get_url() {
         total_commit = Number(prompt("enter repo total commits"));
     } 
 
-    const URL = `${base_url}/commits/${branch}/?after=${SHA}+${total_commit+1-34}`
+    const jump = total_commit-35+1;
+    if(jump < 0) {
+        alert(
+            "You're already on the root commit page: https://github.com/Anxhul10/github-root-commit/issues"
+        )
+        return null;
+    }
+    const URL = `${base_url}/commits/${branch}/?after=${SHA}+${jump}`
     return URL;
 }
 
@@ -71,6 +78,9 @@ function runner() {
 
     if(!res) {
         const URL = get_url();
+        if(!URL) {
+            return document.location.href;
+        }
         sessionStorage.setItem("Anxhul10"+normal_url+"-oldest-url", URL);
         return URL;
     }
