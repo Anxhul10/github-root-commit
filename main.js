@@ -29,16 +29,20 @@ function get_branch() {
 }
 
 function get_sha() {
-    const container = document.querySelector('.ListView-module__ul__uMK30');
-    const itms = container.querySelectorAll('li');
-    const url = itms[0].getAttribute('data-commit-link');
-    const url_split = url.split('/');
-    return url_split[url_split.length-1];
+    const latestCommit = [...document.querySelectorAll(
+        'a[href*="/commit/"]'
+    )].find(a => /\/commit\/[a-f0-9]{40}/i.test(a.pathname));
+
+    const SHA = latestCommit?.pathname.match(
+        /\/commit\/([a-f0-9]{40})/i
+    )?.[1];
+
+    return SHA;
 }
 function get_url() {
     const base_url = get_base_url();
-    const branch = get_branch();
     const SHA = get_sha();
+    const branch = get_branch();
 
     let total_commit = Number(sessionStorage.getItem("Anxhul10"+base_url+"-total-commits"));
     if(!total_commit) {
