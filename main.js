@@ -40,7 +40,7 @@ function get_url() {
     const branch = get_branch();
     const SHA = get_sha();
 
-    let total_commit = Number(localStorage.getItem("Anxhul10"+base_url+"-total-commits"));
+    let total_commit = Number(sessionStorage.getItem("Anxhul10"+base_url+"-total-commits"));
     if(!total_commit) {
         total_commit = Number(prompt("enter repo total commits"));
     } 
@@ -59,11 +59,11 @@ function runner() {
     // to make it work dynamically we need to know the number of commints to skip after the current commit SHA
     const base_url = get_base_url();
     const normal_url = normalize_url(base_url);
-    let res = localStorage.getItem("Anxhul10"+normal_url+"-oldest-url");
+    let res = sessionStorage.getItem("Anxhul10"+normal_url+"-oldest-url");
 
     if(!res) {
         const URL = get_url();
-        localStorage.setItem("Anxhul10"+normal_url+"-oldest-url", URL);
+        sessionStorage.setItem("Anxhul10"+normal_url+"-oldest-url", URL);
         return URL;
     }
     return res;
@@ -81,7 +81,7 @@ function normalize_commit(total_commit) {
 const observer = new MutationObserver(() => {
     const root = document.location.href;
     
-    if(root.split("/").length === 5 && !localStorage.getItem("Anxhul10"+root+"-total-commits")) {
+    if(root.split("/").length === 5 && !sessionStorage.getItem("Anxhul10"+root+"-total-commits")) {
         const cmtContainer = document.querySelector(
             'a[href*="/commits/"]'
         );
@@ -91,7 +91,7 @@ const observer = new MutationObserver(() => {
             ?.textContent;
         
         const commit = normalize_commit(total_commits);
-        localStorage.setItem("Anxhul10"+root+"-total-commits", commit);
+        sessionStorage.setItem("Anxhul10"+root+"-total-commits", commit);
         return;
     }
     // document.body.style.border = "5px solid red";
