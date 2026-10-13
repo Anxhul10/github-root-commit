@@ -22,30 +22,45 @@ function get_base_url() {
 }
 
 function get_branch() {
-    const branch = document.querySelector(
-        '.RefSelectorAnchoredOverlay-module__RefSelectorText__w_fmP'
-    ).textContent;
-    return branch;
+    const branchName = document
+    .querySelector("#ref-picker-commits")
+    ?.getAttribute("aria-label")
+    ?.replace(/ branch$/, "");
+    return branchName;
 }
 
 function get_sha() {
-    const container = document.querySelector('.ListView-module__ul__uMK30');
-    const itms = container.querySelectorAll('li');
-    const url = itms[0].getAttribute('data-commit-link');
-    const url_split = url.split('/');
-    return url_split[url_split.length-1];
+    const latestCommit = [...document.querySelectorAll(
+        'a[href*="/commit/"]'
+    )].find(a => /\/commit\/[a-f0-9]{40}/i.test(a.pathname));
+
+    const SHA = latestCommit?.pathname.match(
+        /\/commit\/([a-f0-9]{40})/i
+    )?.[1];
+
+    if(latestCommit === undefined) {
+        alert('cant find SHA open issue at: https://github.com/Anxhul10/github-root-commit/issues')
+    }
+    return SHA;
 }
 function get_url() {
     const base_url = get_base_url();
-    const branch = get_branch();
     const SHA = get_sha();
+    const branch = get_branch();
 
-    let total_commit = Number(localStorage.getItem("Anxhul10"+base_url+"-total-commits"));
+    let total_commit = Number(sessionStorage.getItem("Anxhul10"+base_url+"-total-commits"));
     if(!total_commit) {
         total_commit = Number(prompt("enter repo total commits"));
     } 
 
-    const URL = `${base_url}/commits/${branch}/?after=${SHA}+${total_commit+1-34}`
+    const jump = total_commit-35+1;
+    if(jump < 0) {
+        alert(
+            "You're already on the root commit page: https://github.com/Anxhul10/github-root-commit/issues"
+        )
+        return null;
+    }
+    const URL = `${base_url}/commits/${branch}/?after=${SHA}+${jump}`
     return URL;
 }
 
@@ -59,11 +74,14 @@ function runner() {
     // to make it work dynamically we need to know the number of commints to skip after the current commit SHA
     const base_url = get_base_url();
     const normal_url = normalize_url(base_url);
-    let res = localStorage.getItem("Anxhul10"+normal_url+"-oldest-url");
+    let res = sessionStorage.getItem("Anxhul10"+normal_url+"-oldest-url");
 
     if(!res) {
         const URL = get_url();
-        localStorage.setItem("Anxhul10"+normal_url+"-oldest-url", URL);
+        if(!URL) {
+            return document.location.href;
+        }
+        sessionStorage.setItem("Anxhul10"+normal_url+"-oldest-url", URL);
         return URL;
     }
     return res;
@@ -81,7 +99,7 @@ function normalize_commit(total_commit) {
 const observer = new MutationObserver(() => {
     const root = document.location.href;
     
-    if(root.split("/").length === 5 && !localStorage.getItem("Anxhul10"+root+"-total-commits")) {
+    if(root.split("/").length === 5 && !sessionStorage.getItem("Anxhul10"+root+"-total-commits")) {
         const cmtContainer = document.querySelector(
             'a[href*="/commits/"]'
         );
@@ -91,7 +109,7 @@ const observer = new MutationObserver(() => {
             ?.textContent;
         
         const commit = normalize_commit(total_commits);
-        localStorage.setItem("Anxhul10"+root+"-total-commits", commit);
+        sessionStorage.setItem("Anxhul10"+root+"-total-commits", commit);
         return;
     }
     // document.body.style.border = "5px solid red";
