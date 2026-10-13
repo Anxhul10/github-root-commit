@@ -37,6 +37,9 @@ function get_sha() {
         /\/commit\/([a-f0-9]{40})/i
     )?.[1];
 
+    if(latestCommit === undefined) {
+        alert('cant find SHA open issue at: https://github.com/Anxhul10/github-root-commit/issues')
+    }
     return SHA;
 }
 function get_url() {
