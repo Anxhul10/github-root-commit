@@ -22,10 +22,11 @@ function get_base_url() {
 }
 
 function get_branch() {
-    const branch = document.querySelector(
-        '.RefSelectorAnchoredOverlay-module__RefSelectorText__w_fmP'
-    ).textContent;
-    return branch;
+    const branchName = document
+    .querySelector("#ref-picker-commits")
+    ?.getAttribute("aria-label")
+    ?.replace(/ branch$/, "");
+    return branchName;
 }
 
 function get_sha() {
